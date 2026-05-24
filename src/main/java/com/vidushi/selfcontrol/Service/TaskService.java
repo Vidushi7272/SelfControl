@@ -22,4 +22,12 @@ public class TaskService {
    public List<Task> getTask(){
         return t.findAll();
    }
+   public Task status(Long id){
+        Task task= t.findById(id).orElseThrow();
+        task.setStatus(true);
+        return task;
+   }
+   public void deleteTask(Long id){
+        t.deleteById(id);
+   }
 }
