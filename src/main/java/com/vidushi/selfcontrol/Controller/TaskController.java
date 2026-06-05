@@ -1,6 +1,7 @@
 package com.vidushi.selfcontrol.Controller;
 import com.vidushi.selfcontrol.Service.TaskService;
 import com.vidushi.selfcontrol.Task;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public class TaskController {
         this.service=service;
     }
     @PostMapping("/tasks")
-    public Task createTask(@RequestBody Task task){
+    public Task createTask(@Valid @RequestBody Task task){
         return service.createTask(task);
     }
     @GetMapping("/tasks")

@@ -1,15 +1,24 @@
 package com.vidushi.selfcontrol;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+
+import jakarta.validation.constraints.*;
+
 @Entity
 public class Task {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
+    @PositiveOrZero(message="Some error occured due to which position field went to negative")
     private Integer position;
-    private String title,description;
+    @NotBlank(message="Title can not be empty")
+    @Size(max=100, message="Title cannot exceed 100 characters.")
+    private String title;
+    private String description;
     private boolean status;
-    private LocalDateTime createdAt,dueDate;
+    private LocalDateTime createdAt;
+    @Future(message="Due date can only be set in future")
+    private LocalDateTime dueDate;
 
     public Long getId() {
         return id;
