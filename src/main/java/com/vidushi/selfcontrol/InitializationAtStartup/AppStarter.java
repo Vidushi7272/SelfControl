@@ -12,7 +12,7 @@ public class AppStarter implements CommandLineRunner {
     }
     @Override
     public void run(String... args) throws Exception {
-     if(repo.count()==0){
+     if(repo.existsById(1L)){
          StickyNotes notes= new StickyNotes();
          notes.setContentNotes("");
          notes.setId(1L);
