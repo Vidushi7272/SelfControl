@@ -41,4 +41,8 @@ public class TaskController {
     public List<Task> getPendingTasks(){
         return service.getPendingTask();
     }
+    @GetMapping("/tasks/overdue")
+    public List<Task> getOverDueTask(){
+        return service.getOverDueTask();
+    }
 }

@@ -30,10 +30,14 @@ public class TaskService {
    public void deleteTask(Long id){
         t.deleteById(id);
    }
+   //filters
    public List<Task> getCompletedTask(){
    return t.findByStatus(true);
    }
     public List<Task> getPendingTask(){
         return t.findByStatus(false);
+    }
+    public List<Task> getOverDueTask(){
+        return t.findBydueDateBefore(LocalDateTime.now());
     }
 }
