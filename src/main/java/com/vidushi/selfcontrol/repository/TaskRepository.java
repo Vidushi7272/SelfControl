@@ -9,5 +9,7 @@ import java.util.List;
 @Repository
 public interface TaskRepository extends JpaRepository<Task,Long> {
     public List<Task> findByStatus(boolean status);
-    public List<Task> findBydueDateBefore(LocalDateTime current);
+    public List<Task> findByDueDateBefore(LocalDateTime current);
+    public List<Task> findAllByOrderByDueDateAsc();
+    public List<Task> findAllByOrderByCreatedAtAsc();
 }

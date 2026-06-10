@@ -38,6 +38,17 @@ public class TaskService {
         return t.findByStatus(false);
     }
     public List<Task> getOverDueTask(){
-        return t.findBydueDateBefore(LocalDateTime.now());
+        return t.findByDueDateBefore(LocalDateTime.now());
+    }
+    public List<Task> Sort(String sort){
+        if(sort.equals("dueDate")){
+            return t.findAllByOrderByDueDateAsc();
+        }
+        else if(sort.equals("createdAt")){
+            return t.findAllByOrderByCreatedAtAsc();
+        }
+        else{
+            throw new IllegalArgumentException("Invalid sort type. Allowed values: dueDate, createdAt, title");
+        }
     }
 }

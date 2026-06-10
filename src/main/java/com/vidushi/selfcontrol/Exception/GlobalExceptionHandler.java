@@ -24,4 +24,15 @@ public class GlobalExceptionHandler {
 
         return errors;
     }
+    @ExceptionHandler(IllegalArgumentException.class)
+    public Map<String,String> handleIllegalArguementException(IllegalArgumentException ex){
+        Map<String, String> errors = new HashMap<>();
+
+        errors.put(
+                "error",
+                ex.getLocalizedMessage()
+        );
+
+        return errors;
+    }
 }

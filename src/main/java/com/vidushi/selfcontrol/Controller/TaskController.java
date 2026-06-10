@@ -45,4 +45,8 @@ public class TaskController {
     public List<Task> getOverDueTask(){
         return service.getOverDueTask();
     }
+    @GetMapping("/tasks/sort")
+    public List<Task> Sort(@RequestParam String sort){
+    return service.Sort(sort);
+    }
 }
