@@ -1,5 +1,5 @@
 package com.vidushi.selfcontrol.Exception;
-
+import com.vidushi.selfcontrol.Exception.TaskNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -34,5 +34,13 @@ public class GlobalExceptionHandler {
         );
 
         return errors;
+    }
+    @ExceptionHandler(TaskNotFoundException.class)
+    public Map<String,String> handleTaskNotFoundException(TaskNotFoundException e){
+        Map<String,String> error= new HashMap<>();
+        error.put(
+                "error", e.getMessage()
+        );
+        return error;
     }
 }

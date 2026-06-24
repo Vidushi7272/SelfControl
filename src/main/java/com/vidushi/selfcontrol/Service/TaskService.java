@@ -1,4 +1,5 @@
 package com.vidushi.selfcontrol.Service;
+import com.vidushi.selfcontrol.Exception.TaskNotFoundException;
 import com.vidushi.selfcontrol.Task;
 import com.vidushi.selfcontrol.repository.TaskRepository;
 import org.springframework.stereotype.Service;
@@ -23,12 +24,15 @@ public class TaskService {
         return t.findAll();
    }
    public Task statusCompleted(Long id){
-        Task task= t.findById(id).orElseThrow();
+        Task task= t.findById(id).orElseThrow(()-> new TaskNotFoundException(id));
         task.setStatus(true);
         return t.save(task);
    }
    public void deleteTask(Long id){
-        t.deleteById(id);
+       t.findById(id)
+               .orElseThrow(() -> new TaskNotFoundException(id));
+
+       t.deleteById(id);
    }
    //filters
    public List<Task> getCompletedTask(){
@@ -48,7 +52,7 @@ public class TaskService {
             return t.findAllByOrderByCreatedAtAsc();
         }
         else{
-            throw new IllegalArgumentException("Invalid sort type. Allowed values: dueDate, createdAt, title");
+            throw new IllegalArgumentException("Invalid sort type. Allowed values: dueDate, createdAt");
         }
     }
 }
