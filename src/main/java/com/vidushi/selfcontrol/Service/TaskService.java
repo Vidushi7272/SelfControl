@@ -1,4 +1,6 @@
 package com.vidushi.selfcontrol.Service;
+import com.vidushi.selfcontrol.DTO.TaskRequestDTO;
+import com.vidushi.selfcontrol.DTO.TaskResponseDTO;
 import com.vidushi.selfcontrol.Exception.TaskNotFoundException;
 import com.vidushi.selfcontrol.Task;
 import com.vidushi.selfcontrol.repository.TaskRepository;
@@ -13,13 +15,33 @@ public class TaskService {
     public TaskService(TaskRepository x){
         t=x;
     }
-   public Task createTask(Task task){
+    public TaskResponseDTO createTask(TaskRequestDTO request){
+
+        Task task = new Task();
+
+        task.setTitle(request.getTitle());
+        task.setDescription(request.getDescription());
         task.setCreatedAt(LocalDateTime.now());
-        if(task.getDueDate()==null){
+
+        if(request.getDueDate() == null){
             task.setDueDate(LocalDateTime.now().plusHours(24));
         }
-        return t.save(task);
-   }
+        else{
+            task.setDueDate(request.getDueDate());
+        }
+
+        Task savedTask = t.save(task);
+
+        TaskResponseDTO response = new TaskResponseDTO();
+
+        response.setId(savedTask.getId());
+        response.setTitle(savedTask.getTitle());
+        response.setDescription(savedTask.getDescription());
+        response.setStatus(savedTask.getStatus());
+        response.setDueDate(savedTask.getDueDate());
+
+        return response;
+    }
    public List<Task> getTask(){
         return t.findAll();
    }

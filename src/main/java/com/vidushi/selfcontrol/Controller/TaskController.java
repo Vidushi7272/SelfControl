@@ -1,4 +1,6 @@
 package com.vidushi.selfcontrol.Controller;
+import com.vidushi.selfcontrol.DTO.TaskRequestDTO;
+import com.vidushi.selfcontrol.DTO.TaskResponseDTO;
 import com.vidushi.selfcontrol.Service.TaskService;
 import com.vidushi.selfcontrol.Task;
 import jakarta.validation.Valid;
@@ -14,8 +16,9 @@ public class TaskController {
     }
     //to create new task
     @PostMapping("/tasks")
-    public Task createTask(@Valid @RequestBody Task task){
-        return service.createTask(task);
+    public TaskResponseDTO createTask(@Valid @RequestBody TaskRequestDTO request){
+
+        return service.createTask(request);
     }
     // to fetch all tasks
     @GetMapping("/tasks")

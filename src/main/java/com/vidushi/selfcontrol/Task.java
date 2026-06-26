@@ -36,7 +36,7 @@ public class Task {
         return description;
     }
 
-    public boolean isStatus() {
+    public boolean getStatus() {
         return status;
     }
 
@@ -75,4 +75,5 @@ public class Task {
     public void setDueDate(LocalDateTime dueDate) {
         this.dueDate = dueDate;
     }
+
 }
