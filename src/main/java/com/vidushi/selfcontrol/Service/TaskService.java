@@ -15,40 +15,55 @@ public class TaskService {
     public TaskService(TaskRepository x){
         t=x;
     }
-    public TaskResponseDTO createTask(TaskRequestDTO request){
+    private Task toEntity(TaskRequestDTO request){
 
         Task task = new Task();
 
         task.setTitle(request.getTitle());
         task.setDescription(request.getDescription());
-        task.setCreatedAt(LocalDateTime.now());
 
-        if(request.getDueDate() == null){
+        if(request.getDueDate()==null){
             task.setDueDate(LocalDateTime.now().plusHours(24));
         }
         else{
             task.setDueDate(request.getDueDate());
         }
 
-        Task savedTask = t.save(task);
+        task.setCreatedAt(LocalDateTime.now());
+        task.setStatus(false);
+
+        return task;
+    }
+    private TaskResponseDTO toResponseDTO(Task task){
 
         TaskResponseDTO response = new TaskResponseDTO();
 
-        response.setId(savedTask.getId());
-        response.setTitle(savedTask.getTitle());
-        response.setDescription(savedTask.getDescription());
-        response.setStatus(savedTask.getStatus());
-        response.setDueDate(savedTask.getDueDate());
+        response.setId(task.getId());
+        response.setTitle(task.getTitle());
+        response.setDescription(task.getDescription());
+        response.setStatus(task.getStatus());
+        response.setDueDate(task.getDueDate());
 
         return response;
     }
-   public List<Task> getTask(){
-        return t.findAll();
-   }
-   public Task statusCompleted(Long id){
-        Task task= t.findById(id).orElseThrow(()-> new TaskNotFoundException(id));
+    public TaskResponseDTO createTask(TaskRequestDTO request){
+        Task savedTask = t.save(toEntity(request));
+        return toResponseDTO(savedTask);
+    }
+    public TaskResponseDTO statusCompleted(Long id){
+
+        Task task = t.findById(id)
+                .orElseThrow(() -> new TaskNotFoundException(id));
+
         task.setStatus(true);
-        return t.save(task);
+
+        Task savedTask = t.save(task);
+
+        return toResponseDTO(savedTask);
+    }
+   public List<TaskResponseDTO> getTask(){
+        return t.findAll().stream().map(this::toResponseDTO).toList();
+
    }
    public void deleteTask(Long id){
        t.findById(id)
@@ -57,21 +72,21 @@ public class TaskService {
        t.deleteById(id);
    }
    //filters
-   public List<Task> getCompletedTask(){
-   return t.findByStatus(true);
+   public List<TaskResponseDTO> getCompletedTask(){
+        return t.findByStatus(true).stream().map(this::toResponseDTO).toList();
    }
-    public List<Task> getPendingTask(){
-        return t.findByStatus(false);
+    public List<TaskResponseDTO> getPendingTask(){
+        return t.findByStatus(false).stream().map(this::toResponseDTO).toList();
     }
-    public List<Task> getOverDueTask(){
-        return t.findByDueDateBefore(LocalDateTime.now());
+    public List<TaskResponseDTO> getOverDueTask(){
+        return t.findByDueDateBefore(LocalDateTime.now()).stream().map(this::toResponseDTO).toList();
     }
-    public List<Task> Sort(String sort){
+    public List<TaskResponseDTO> Sort(String sort){
         if(sort.equals("dueDate")){
-            return t.findAllByOrderByDueDateAsc();
+            return t.findAllByOrderByDueDateAsc().stream().map(this::toResponseDTO).toList();
         }
         else if(sort.equals("createdAt")){
-            return t.findAllByOrderByCreatedAtAsc();
+            return t.findAllByOrderByCreatedAtAsc().stream().map(this::toResponseDTO).toList();
         }
         else{
             throw new IllegalArgumentException("Invalid sort type. Allowed values: dueDate, createdAt");

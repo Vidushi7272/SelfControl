@@ -22,12 +22,12 @@ public class TaskController {
     }
     // to fetch all tasks
     @GetMapping("/tasks")
-    public List<Task> getTask(){
+    public List<TaskResponseDTO> getTask(){
       return service.getTask();
     }
     //to update task completion
     @PutMapping("/tasks/{id}")
-    public Task Status(@PathVariable Long id){
+    public TaskResponseDTO Status(@PathVariable Long id){
         return service.statusCompleted(id);
     }
     // to delete task
@@ -37,19 +37,19 @@ public class TaskController {
     }
     @GetMapping("/tasks/completed")
     //filters
-    public List<Task> getCompletedTasks(){
+    public List<TaskResponseDTO> getCompletedTasks(){
         return service.getCompletedTask();
     }
     @GetMapping("/tasks/pending")
-    public List<Task> getPendingTasks(){
+    public List<TaskResponseDTO> getPendingTasks(){
         return service.getPendingTask();
     }
     @GetMapping("/tasks/overdue")
-    public List<Task> getOverDueTask(){
+    public List<TaskResponseDTO> getOverDueTask(){
         return service.getOverDueTask();
     }
     @GetMapping("/tasks/sort")
-    public List<Task> Sort(@RequestParam String sort){
+    public List<TaskResponseDTO> Sort(@RequestParam String sort){
     return service.Sort(sort);
     }
 }
